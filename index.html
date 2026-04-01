@@ -21,7 +21,6 @@
             overflow-x: hidden;
         }
 
-        /* custom scroll */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -31,15 +30,6 @@
         ::-webkit-scrollbar-thumb {
             background: #3b82f6;
             border-radius: 10px;
-        }
-
-        /* glass morphism & neon */
-        .glass-panel {
-            background: rgba(15, 20, 25, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(59, 130, 246, 0.25);
-            border-radius: 2rem;
         }
 
         .container {
@@ -57,14 +47,13 @@
             flex-wrap: wrap;
         }
         .logo {
-            font-size: 1.9rem;
+            font-size: 2rem;
             font-weight: 800;
             letter-spacing: -1px;
             background: linear-gradient(135deg, #FFFFFF 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 15px rgba(59,130,246,0.3);
         }
         .logo span {
             background: linear-gradient(135deg, #3b82f6, #a855f7);
@@ -134,10 +123,9 @@
         }
         .search-box button:hover {
             transform: scale(0.97);
-            background: linear-gradient(105deg, #1d4ed8, #2563eb);
         }
 
-        /* chips */
+        /* section */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -147,10 +135,11 @@
         .section-header h2 {
             font-size: 1.4rem;
             font-weight: 700;
-            letter-spacing: -0.3px;
             border-left: 4px solid #3b82f6;
             padding-left: 12px;
         }
+
+        /* chips */
         .chips-scroll {
             display: flex;
             gap: 12px;
@@ -180,7 +169,7 @@
             box-shadow: 0 0 10px rgba(59,130,246,0.4);
         }
 
-        /* grid anime */
+        /* grid */
         .anime-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -199,7 +188,7 @@
             }
         }
 
-        /* card style premium */
+        /* card */
         .anime-card {
             background: rgba(18, 24, 32, 0.75);
             backdrop-filter: blur(8px);
@@ -210,6 +199,7 @@
             text-decoration: none;
             display: block;
             color: white;
+            cursor: pointer;
         }
         .anime-card:hover {
             transform: translateY(-6px);
@@ -245,7 +235,6 @@
             font-weight: 700;
             color: #90d0ff;
             border-left: 2px solid #3b82f6;
-            letter-spacing: 0.3px;
         }
         .card-info {
             padding: 0.9rem 0.8rem 1rem;
@@ -267,18 +256,31 @@
             align-items: center;
             gap: 6px;
         }
+
+        /* loading */
         .loading-skeleton {
             background: linear-gradient(90deg, #1a222c 25%, #2a3340 50%, #1a222c 75%);
             background-size: 200% 100%;
             animation: shimmer 1.2s infinite;
             border-radius: 1rem;
+            height: 270px;
         }
         @keyframes shimmer {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
 
-        /* bottom navigation */
+        /* empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 2rem;
+            margin-top: 1rem;
+            grid-column: 1 / -1;
+        }
+
+        /* bottom nav */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
@@ -294,7 +296,6 @@
             padding: 0.6rem 0.8rem;
             border: 1px solid rgba(59,130,246,0.3);
             z-index: 100;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
         }
         .nav-item {
             display: flex;
@@ -306,51 +307,40 @@
             gap: 4px;
             font-size: 0.7rem;
             font-weight: 600;
+            cursor: pointer;
         }
         .nav-item i {
             font-size: 1.3rem;
         }
         .nav-item.active {
             color: #3b82f6;
-            transform: translateY(-2px);
-            text-shadow: 0 0 5px rgba(59,130,246,0.5);
         }
 
-        /* error & empty */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            background: rgba(0,0,0,0.3);
-            border-radius: 2rem;
-            margin-top: 1rem;
-        }
         footer {
             text-align: center;
             font-size: 0.7rem;
             color: #4b5a6e;
             margin-top: 2rem;
+            padding-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- header -->
     <div class="logo-area">
         <div class="logo">Ski<span>Zone</span></div>
         <div class="badge-creator"><i class="fa-regular fa-user-astronaut"></i> created by sycho</div>
     </div>
 
-    <!-- search -->
     <div class="search-wrapper">
         <div class="search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Cari anime favoritmu... (contoh: bleach, solo leveling)">
+            <input type="text" id="searchInput" placeholder="Cari anime favoritmu...">
             <button id="searchBtn"><i class="fa-regular fa-paper-plane"></i> Cari</button>
         </div>
     </div>
 
-    <!-- chips kategori (optional tapi fungsional) -->
     <div class="section-header">
         <h2>🔥 Trending & Terbaru</h2>
     </div>
@@ -362,120 +352,95 @@
         <div class="chip" data-search="action">Action</div>
     </div>
 
-    <!-- Anime grid -->
-    <div id="animeGrid" class="anime-grid">
-        <!-- skeleton loading akan muncul via js -->
-    </div>
+    <div id="animeGrid" class="anime-grid"></div>
     <div id="loadMoreTrigger" style="height: 10px; margin: 20px 0;"></div>
-    <footer>⚡ SkiZone — Stream anime terbaru dari Anoboy • dibuat oleh sycho dengan gaya neon</footer>
+    <footer>⚡ SkiZone — Stream anime terbaru dari Anoboy • dibuat oleh sycho</footer>
 </div>
 
-<!-- bottom nav -->
 <div class="bottom-nav">
-    <a href="#" class="nav-item active" data-nav="home"><i class="fa-solid fa-house-chimney"></i><span>Beranda</span></a>
-    <a href="#" class="nav-item" data-nav="search"><i class="fa-solid fa-compass"></i><span>Jelajah</span></a>
-    <a href="#" class="nav-item" data-nav="fav"><i class="fa-regular fa-star"></i><span>Favorite</span></a>
-    <a href="#" class="nav-item" data-nav="profile"><i class="fa-regular fa-user"></i><span>Akun</span></a>
+    <div class="nav-item active" data-nav="home"><i class="fa-solid fa-house-chimney"></i><span>Beranda</span></div>
+    <div class="nav-item" data-nav="search"><i class="fa-solid fa-compass"></i><span>Jelajah</span></div>
+    <div class="nav-item" data-nav="fav"><i class="fa-regular fa-star"></i><span>Favorite</span></div>
+    <div class="nav-item" data-nav="profile"><i class="fa-regular fa-user"></i><span>Akun</span></div>
 </div>
 
 <script>
-    // Base API
     const API_BASE = "https://weeb-scraper.onrender.com/api/anoboy";
-
+    
     let currentPage = 1;
     let currentQuery = "";
     let isLoading = false;
     let hasMore = true;
-    let currentChipQuery = "";
-
+    
     const grid = document.getElementById("animeGrid");
     const searchInput = document.getElementById("searchInput");
     const searchBtn = document.getElementById("searchBtn");
 
-    // Fungsi fetch data
     async function fetchAnime(page = 1, query = "") {
+        if (isLoading) return;
         isLoading = true;
+        
         if (page === 1) {
             grid.innerHTML = `
-                ${Array(10).fill(0).map(() => `
-                    <div class="anime-card loading-skeleton" style="height: 270px;"></div>
-                `).join('')}
+                ${Array(10).fill().map(() => `<div class="loading-skeleton"></div>`).join('')}
             `;
         }
-
+        
         try {
-            let url = `${API_BASE}?page=${page}`;
+            let url;
             if (query.trim() !== "") {
                 url = `${API_BASE}?s=${encodeURIComponent(query)}`;
-                // kalau search, page nya tidak relevan karena endpoint search langsung hasil semua, kita handle
+                hasMore = false;
+            } else {
+                url = `${API_BASE}?page=${page}`;
+                hasMore = true;
             }
+            
             const response = await fetch(url);
             const result = await response.json();
-
-            let items = [];
-            if (query.trim() !== "") {
-                // Mode pencarian: hasil dari result.data
-                if (result && result.data && Array.isArray(result.data)) {
-                    items = result.data;
-                    hasMore = false; // search hanya sekali load
-                } else {
-                    items = [];
-                    hasMore = false;
-                }
-            } else {
-                // mode pagination / trending
-                if (result && result.data && Array.isArray(result.data)) {
-                    items = result.data;
-                    // cek next page
-                    hasMore = !!result.next_page;
-                } else {
-                    items = [];
-                    hasMore = false;
-                }
+            
+            let items = result.data || [];
+            
+            if (!query && result.next_page === null) {
+                hasMore = false;
             }
-
+            
             if (page === 1) {
-                renderAnimeCards(items);
+                renderCards(items);
             } else {
-                appendAnimeCards(items);
+                appendCards(items);
             }
-
+            
             if (items.length === 0 && page === 1) {
-                grid.innerHTML = `<div class="empty-state"><i class="fa-regular fa-face-frown" style="font-size: 2rem;"></i><p style="margin-top: 10px;">Tidak ada anime ditemukan :(<br>Coba kata kunci lain</p></div>`;
+                grid.innerHTML = `<div class="empty-state"><i class="fa-regular fa-face-frown" style="font-size: 2rem;"></i><p style="margin-top: 10px;">Tidak ada anime ditemukan</p></div>`;
             }
         } catch (err) {
             console.error(err);
             if (page === 1) {
-                grid.innerHTML = `<div class="empty-state"><i class="fa-regular fa-circle-exclamation"></i><p>Gagal memuat data. Coba lagi nanti.</p></div>`;
+                grid.innerHTML = `<div class="empty-state"><i class="fa-regular fa-circle-exclamation"></i><p>Gagal memuat data. Coba refresh.</p></div>`;
             }
-            hasMore = false;
         } finally {
             isLoading = false;
         }
     }
-
-    // Render kartu
-    function renderAnimeCards(items) {
+    
+    function renderCards(items) {
         if (!items.length) {
             grid.innerHTML = `<div class="empty-state"><i class="fa-regular fa-folder-open"></i><p>Belum ada anime</p></div>`;
             return;
         }
+        
         grid.innerHTML = items.map(anime => {
-            // Ambil thumbnail dengan proxy biar aman
             let thumb = anime.thumbnail || "https://placehold.co/300x450/1e293b/3b82f6?text=No+Image";
             let title = anime.title || "Judul Tidak Diketahui";
             let upload = anime.upload_time || "Baru";
-            let detailUrl = `#`; // karena kita tidak membuat halaman detail internal, tapi kita akan buat link ke detail via modal atau redirect ke link asli?
-            // Biar user tetap bisa nonton, kita arahkan ke detail_url API? Tapi kita lebih baik buka halaman baru yang mengarah ke iframe atau embed player?
-            // Karena API memiliki endpoint detail, kita akan buat klik card => buka modal / halaman sederhana? 
-            // Untuk kemudahan, kita buat klik card => redirect ke halaman detail internal (dengan param) tapi kali ini kita buat popup sederhana?
-            // Karena pengalaman seamless, kita buat fungsi showDetail(param)
-            const param = anime.param || "";
+            let param = anime.param || "";
+            
             return `
-                <div class="anime-card" data-param="${param}" data-title="${escapeHtml(title)}" data-thumb="${thumb}" data-upload="${upload}">
+                <div class="anime-card" data-param="${param}" data-title="${escapeHtml(title)}">
                     <div class="poster">
                         <img src="${thumb}" alt="${title}" loading="lazy" onerror="this.src='https://placehold.co/300x450/1e293b/3b82f6?text=Error'">
-                        <div class="ep-badge">${upload.split(' ')[0] || 'Episode'}</div>
+                        <div class="ep-badge">${escapeHtml(upload.split(' ')[0] || 'Episode')}</div>
                     </div>
                     <div class="card-info">
                         <h3>${escapeHtml(title.length > 45 ? title.slice(0,45)+'...' : title)}</h3>
@@ -484,86 +449,48 @@
                 </div>
             `;
         }).join('');
-
-        // attach event listener ke card
+        
         document.querySelectorAll('.anime-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
+            card.addEventListener('click', () => {
                 const param = card.getAttribute('data-param');
                 if (param) {
-                    window.open(`#detail?param=${encodeURIComponent(param)}`, '_blank');
-                    // alternative: kita bisa buat fungsi loadDetail(param)
-                    loadDetailPage(param);
+                    window.open(`https://weeb-scraper.onrender.com/api/anoboy/${param}`, '_blank');
                 } else {
-                    alert("Link episode tidak tersedia sementara.");
+                    alert("Link tidak tersedia");
                 }
             });
         });
     }
-
-    function appendAnimeCards(items) {
-        const fragment = document.createDocumentFragment();
-        const tempDiv = document.createElement('div');
+    
+    function appendCards(items) {
         items.forEach(anime => {
             let thumb = anime.thumbnail || "https://placehold.co/300x450/1e293b/3b82f6?text=No+Image";
             let title = anime.title || "Judul Tidak Diketahui";
             let upload = anime.upload_time || "Baru";
-            const param = anime.param || "";
-            const cardDiv = document.createElement('div');
-            cardDiv.className = "anime-card";
-            cardDiv.setAttribute('data-param', param);
-            cardDiv.innerHTML = `
+            let param = anime.param || "";
+            
+            const card = document.createElement('div');
+            card.className = "anime-card";
+            card.setAttribute('data-param', param);
+            card.innerHTML = `
                 <div class="poster">
                     <img src="${thumb}" loading="lazy" onerror="this.src='https://placehold.co/300x450/1e293b/3b82f6?text=Error'">
-                    <div class="ep-badge">${upload.split(' ')[0]}</div>
+                    <div class="ep-badge">${escapeHtml(upload.split(' ')[0] || 'Episode')}</div>
                 </div>
                 <div class="card-info">
                     <h3>${escapeHtml(title.length > 45 ? title.slice(0,45)+'...' : title)}</h3>
                     <div class="meta-time"><i class="fa-regular fa-clock"></i> ${escapeHtml(upload)}</div>
                 </div>
             `;
-            cardDiv.addEventListener('click', () => loadDetailPage(param));
-            fragment.appendChild(cardDiv);
+            card.addEventListener('click', () => {
+                if (param) {
+                    window.open(`https://weeb-scraper.onrender.com/api/anoboy/${param}`, '_blank');
+                }
+            });
+            grid.appendChild(card);
         });
-        grid.appendChild(fragment);
     }
-
-    // load detail (membuka halaman embed dengan stream link)
-    async function loadDetailPage(param) {
-        if (!param) return alert("Parameter tidak valid");
-        try {
-            const detailUrl = `${API_BASE}/${param}`;
-            const resp = await fetch(detailUrl);
-            const result = await resp.json();
-            const data = result.data;
-            if (!data) throw new Error("no detail");
-            // ambil video direct links / embed links terbaik (720p / 360p)
-            let videoUrl = "";
-            if (data.video_direct_links && data.video_direct_links.length > 0) {
-                const best = data.video_direct_links.find(v => v.resolution === "720P") || data.video_direct_links[0];
-                videoUrl = best.link;
-            } else if (data.video_embed_links && data.video_embed_links.length > 0) {
-                const embed720 = data.video_embed_links.find(v => v.resolution === "720P");
-                videoUrl = embed720 ? embed720.link : data.video_embed_links[0].link;
-            }
-            if (!videoUrl) {
-                alert("Link video tidak ditemukan untuk episode ini.");
-                return;
-            }
-            // buka modal atau tab baru dengan player
-            const winHtml = `
-            <!DOCTYPE html>
-            <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${data.name || 'SkiZone - Nonton'}</title><style>body{margin:0;background:#000;color:white;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;}video{max-width:100%;max-height:80vh;box-shadow:0 0 20px rgba(59,130,246,0.5);border-radius:20px;} .info{padding:1rem;text-align:center;}</style></head><body><div class="info"><h2>${data.name || 'Streaming Anime'}</h2></div><video controls autoplay><source src="${videoUrl}" type="video/mp4">Browser tidak support video.</video><div style="padding:20px;"><a href="${videoUrl}" download style="color:#3b82f6">Download / Link Alternatif</a></div></body></html>
-            `;
-            const detailWindow = window.open();
-            detailWindow.document.write(winHtml);
-            detailWindow.document.close();
-        } catch (err) {
-            console.error(err);
-            alert("Gagal memuat detail tayangan.");
-        }
-    }
-
+    
     function escapeHtml(str) {
         if (!str) return "";
         return str.replace(/[&<>]/g, function(m) {
@@ -571,33 +498,28 @@
             if (m === '<') return '&lt;';
             if (m === '>') return '&gt;';
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
-
-    // load trending pertama kali
+    
     function loadTrending() {
         currentPage = 1;
         currentQuery = "";
         hasMore = true;
         fetchAnime(1, "");
     }
-
-    // search handler
+    
     function performSearch() {
         const query = searchInput.value.trim();
         currentQuery = query;
         currentPage = 1;
-        hasMore = false; // search single page
         if (query === "") {
             loadTrending();
         } else {
             fetchAnime(1, query);
         }
     }
-
-    // chip click
+    
+    // chips
     document.querySelectorAll(".chip").forEach(chip => {
         chip.addEventListener("click", function() {
             document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
@@ -612,35 +534,35 @@
             }
         });
     });
-
+    
     searchBtn.addEventListener("click", performSearch);
     searchInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") performSearch();
     });
-
-    // infinite scroll sederhana (hanya untuk mode non-search)
+    
+    // infinite scroll
     const observer = new IntersectionObserver((entries) => {
-        const target = entries[0];
-        if (target.isIntersecting && !isLoading && hasMore && currentQuery === "") {
+        if (entries[0].isIntersecting && !isLoading && hasMore && currentQuery === "") {
             currentPage++;
             fetchAnime(currentPage, "");
         }
     }, { threshold: 0.5 });
+    
     const loadTrigger = document.getElementById("loadMoreTrigger");
     if (loadTrigger) observer.observe(loadTrigger);
-
-    // bottom nav hanya estetika
+    
+    // bottom nav
     document.querySelectorAll(".nav-item").forEach(nav => {
         nav.addEventListener("click", (e) => {
-            e.preventDefault();
             document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
             nav.classList.add("active");
             if (nav.getAttribute("data-nav") === "home") loadTrending();
             else if (nav.getAttribute("data-nav") === "search") searchInput.focus();
-            else alert("Fitur favorit akan hadir di update berikutnya ~ sycho");
+            else alert("Fitur sedang dalam pengembangan ~ sycho");
         });
     });
-
+    
+    // start
     loadTrending();
 </script>
 </body>
